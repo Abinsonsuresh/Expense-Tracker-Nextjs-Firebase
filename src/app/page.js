@@ -70,7 +70,7 @@ export default function Home() {
       </div>
     <div className="bg-slate-900 p-4  h-full rounded-sm">
 
-      <form className="grid grid-cols-6" action="">
+      <form className="grid grid-cols-6 text-black" action="">
         <input className="col-span-3  rounded-sm p-2" value={newItem.name} onChange={(e) => setNewItem({ ...newItem, name: e.target.value })} type="text" placeholder="Enter your Expense" />
         <input className="col-span-2 rounded-sm p-2 mx-2" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} type="number" placeholder="Enter $" />
         <button className="bg-green-500 p-4 text-xl" type="submit" onClick={addItem}>+</button>
