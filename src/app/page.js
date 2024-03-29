@@ -1,6 +1,8 @@
 'use client'
 import Image from "next/image";
 import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from "./firebase";
 
 export default function Home() {
   const [items, setItems] = useState([
@@ -10,13 +12,37 @@ export default function Home() {
 
   ])
 
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(0);
+  const [newItem, setNewItem] = useState({
+    name: '', 
+    price: ''
+  });
+
+
+  // ADD
+  const addItem = async (e) =>{
+    e.preventDefault();
+    if(newItem.name !== '' && newItem.price !== '')
+    {
+      // setItems([...items, newItem]);
+      await addDoc(collection(db, 'items'),{
+        name: newItem.name.trim(),
+        price: newItem.price,
+      })
+    }
+  }
+
+  // READ
+
+
+  // DELETE
   return (
     <div>
+
       <form action="">
-        <input type="text" placeholder="Enter your Expense" />
-        <input type="number" placeholder="Enter $" />
-        <button type="submit">+</button>
+        <input value={newItem.name} onChange={(e)=> setNewItem({...newItem, name: e.target.value})} type="text" placeholder="Enter your Expense" />
+        <input value={newItem.price} onChange={(e)=> setNewItem({...newItem, price: e.target.value})} type="number" placeholder="Enter $" />
+        <button type="submit" onClick={addItem}>+</button>
       </form>
       <ul className="flex flex-col">
         {items.map((item,index) => (
@@ -25,7 +51,7 @@ export default function Home() {
           <p>{item.name}</p>
             <p>{item.price}</p>
           </div>
-          <button className="ml-8 w-16 p-4 bg-slate-600">X</button>
+          <button  className="ml-8 w-16 p-4 bg-slate-600">X</button>
           </li>
         ))}
       </ul>
