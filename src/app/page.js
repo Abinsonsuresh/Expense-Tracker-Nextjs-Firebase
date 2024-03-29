@@ -29,6 +29,7 @@ export default function Home() {
         name: newItem.name.trim(),
         price: newItem.price,
       })
+      setNewItem({name: '', price: ''})
     }
   }
 
