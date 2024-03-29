@@ -1,14 +1,14 @@
 'use client'
 import Image from "next/image";
-import { useState } from "react";
-import { collection, addDoc } from "firebase/firestore"; 
+import { useEffect, useState } from "react";
+import { collection, addDoc, getDoc, QuerySnapshot, query, onSnapshot } from "firebase/firestore"; 
 import { db } from "./firebase";
 
 export default function Home() {
   const [items, setItems] = useState([
-    { name: 'Coffee', price: 4.96 },
-    { name: 'movie', price: 3.6 },
-    { name: 'Coffee', price: 4.96 },
+    // { name: 'Coffee', price: 4.96 },
+    // { name: 'movie', price: 3.6 },
+    // { name: 'Coffee', price: 4.96 },
 
   ])
 
@@ -34,7 +34,16 @@ export default function Home() {
   }
 
   // READ
-
+useEffect(()=>{
+const q = query(collection(db, 'items'))
+const unSubscribe = onSnapshot(q, (QuerySnapshot)=>{
+  let itemsArr = []
+  QuerySnapshot.forEach((doc)=>{
+    itemsArr.push({...doc.data(), id:doc.id})
+  })
+  setItems(itemsArr)
+})
+},[])
 
   // DELETE
   return (
