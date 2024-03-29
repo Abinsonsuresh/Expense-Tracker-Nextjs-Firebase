@@ -1,7 +1,7 @@
 'use client'
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { collection, addDoc, getDoc, QuerySnapshot, query, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, getDoc, QuerySnapshot, query, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
 
 export default function Home() {
@@ -31,28 +31,7 @@ export default function Home() {
       setNewItem({ name: '', price: '' })
     }
   }
-  // useEffect(() => {
-  //   const q = query(collection(db, 'items'));
-  //   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  //     let itemsArr = [];
 
-  //     querySnapshot.forEach((doc) => {
-  //       itemsArr.push({ ...doc.data(), id: doc.id });
-  //     });
-  //     setItems(itemsArr);
-
-  //     // Read total from itemsArr
-  //     const calculateTotal = () => {
-  //       const totalPrice = itemsArr.reduce(
-  //         (sum, item) => sum + parseFloat(item.price),
-  //         0
-  //       );
-  //       setTotal(totalPrice);
-  //     };
-  //     calculateTotal();
-  //     return () => unsubscribe();
-  //   });
-  // }, []);
 
   // READ
   useEffect(() => {
@@ -75,6 +54,18 @@ export default function Home() {
   }, [])
 
   // DELETE
+  const deleteItem = async (id) => {
+    cons
+    await deleteDoc(doc(db, 'items', id));
+  };
+
+
+
+
+
+
+
+
   return (
     <div>
 
@@ -84,13 +75,13 @@ export default function Home() {
         <button type="submit" onClick={addItem}>+</button>
       </form>
       <ul className="flex flex-col">
-        {items.map((item, index) => (
-          <li key={index} className="flex justify-between w-full">
+        {items.map((item, id) => (
+          <li key={id} className="flex justify-between w-full">
             <div className="flex p-4 w-full justify-between gap-4">
               <p>{item.name}</p>
               <p>{item.price}</p>
             </div>
-            <button className="ml-8 w-16 p-4 bg-slate-600">X</button>
+            <button onClick={()=> deleteItem(item.id)} className="ml-8 w-16 p-4 bg-slate-600">X</button>
           </li>
         ))}
       </ul>
